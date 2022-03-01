@@ -20,4 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: 🤖 Run Cypress Tests 
-        run: npm run test:e2e
+        run: |
+          npm install
+          npm run test:e2e
