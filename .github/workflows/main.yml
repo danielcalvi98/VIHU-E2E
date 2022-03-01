@@ -15,12 +15,23 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🔌 Install packages
+        run: npm install
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🔨 Build
+        run: npm run build
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: 🤖 Run Cypress Tests 
         run: |
-          npm install
           npm start
           npm run test:e2e
