@@ -22,4 +22,5 @@ jobs:
       - name: 🤖 Run Cypress Tests 
         run: |
           npm install
+          npm start
           npm run test:e2e
