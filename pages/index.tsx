@@ -3,15 +3,12 @@ import styles from "../styles/Home.module.css";
 import { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import { Todo } from "../lib/todoStore";
-import Image from "next/image";
 
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [loading, setLoading] = useState(false);
   const [todo, setTodo] = useState("");
 
   useEffect(() => {
-    setLoading(true);
     loadTodos();
   }, []);
 
@@ -25,18 +22,17 @@ export default function Home() {
     if (todo.length === 0) {
       return;
     }
-    setLoading(true);
+
     setTodo("");
     event.preventDefault();
     const { data } = await axios.post("/api/add", { title: todo });
-    setLoading(false);
+
     setTodos([...todos, data]);
   };
 
   let removeTodo = async (rtodo: Todo) => {
-    setLoading(true);
     await axios.delete(`/api/remove?id=${rtodo.id}`);
-    setLoading(false);
+
     const filteredData = todos.filter((d) => d.id !== rtodo.id);
     setTodos(filteredData);
   };
@@ -44,7 +40,6 @@ export default function Home() {
   let loadTodos = async () => {
     const { data } = await axios.get("/api/list");
     setTodos(data);
-    setLoading(false);
   };
 
   if (!todos) {
@@ -69,22 +64,19 @@ export default function Home() {
             <br />
             <br />
           </h1>
-          {loading ? (
-            <a href="#" className={styles.card}>
-              <Image width={20} height={20} alt="loading" src="/loader.gif" />
-            </a>
-          ) : (
-            <form className={styles.cardForm} onSubmit={addTodo}>
-              <input
-                data-testid="todo-input"
-                className={styles.cardInput}
-                type="text"
-                name="todo"
-                onChange={changeHandler}
-                placeholder="What are you going to TODO?"
-              />
-            </form>
-          )}
+
+          <form className={styles.cardForm} onSubmit={addTodo}>
+            <input
+              value={todo}
+              data-testid="todo-input"
+              className={styles.cardInput}
+              type="text"
+              name="todo"
+              onChange={changeHandler}
+              placeholder="What are you going to TODO?"
+            />
+          </form>
+
           {todos.map((item) => (
             <a
               data-testid="todo-item"
