@@ -15,19 +15,32 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  cypress-run:
+  🏃‍♀️cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 📝 Checkout
         uses: actions/checkout@v2
 
-      - name: Install
-        run: |
-          npm install
-          npm run prisma:init
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
+      - name: ⚾ Cache
+        uses: actions/cache@v2
+        with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: 🔌 Install
+        run: npm install
+
+      - name: 👌 Prisma init
+        run: npm run prisma:init
+
+      - name: 🏃‍♀️ Cypress run
         uses: cypress-io/github-action@v2
         with:
           build: npm run build
