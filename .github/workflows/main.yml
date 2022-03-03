@@ -22,7 +22,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install
-        run: npm install
+        run: |
+          npm install
+          npm run prisma:init
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
