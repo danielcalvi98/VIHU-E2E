@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  🏃‍♀️cypress-run:
+  cypress-run:
     runs-on: ubuntu-latest
     steps:
       - name: 📝 Checkout
@@ -40,7 +40,7 @@ jobs:
       - name: 👌 Prisma init
         run: npm run prisma:init
 
-      - name: 🏃‍♀️ Cypress run
+      - name: 🏃 Cypress run
         uses: cypress-io/github-action@v2
         with:
           build: npm run build
