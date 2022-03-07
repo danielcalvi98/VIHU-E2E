@@ -46,6 +46,9 @@ jobs:
           build: npm run build
           start: npm start
 
+      - name: 🔄 Prisma reset
+        run: npm run prisma:reset
+
   react-test:
     runs-on: ubuntu-latest
     steps:
