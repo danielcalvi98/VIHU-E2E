@@ -24,9 +24,9 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-describe("Tests", () => {
+describe("📝Tests", () => {
   // TODO Add your react-testing-library tests here
-  test("Display loading", async () => {
+  test("🚚 Displays loading", async () => {
     
     server.use(
       rest.get('/api/list', (req, res, ctx) => {
@@ -39,14 +39,14 @@ describe("Tests", () => {
     );  
   })
 
-  test("Check if 1 item is in the list", async () => {
+  test("🔍 Check if 1 item is in the list", async () => {
     render(<Home />)
     await waitFor(() =>
         expect(screen.getAllByTestId("todo-item")).toHaveLength(1)
     );
   })
 
-  test("Add TODO to the list", async () => {
+  test("➕ Add TODO to the list", async () => {
     render(<Home />);
     await waitFor(() =>
         expect(screen.getAllByTestId("todo-item")).toHaveLength(1)
@@ -60,7 +60,7 @@ describe("Tests", () => {
     );
 });
 // Write a test that removes an item from the list
-test("Remove TODO from the list", async () => {
+test("➖  Remove TODO from the list", async () => {
     render(<Home />);
     await waitFor(() =>
         expect(screen.getAllByTestId("todo-item")).toHaveLength(1)
