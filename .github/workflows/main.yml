@@ -98,16 +98,16 @@ jobs:
         run: docker push registry.digitalocean.com/todo-app/deployment:$(echo $GITHUB_SHA | head -c7)
 
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/todo-app/deployment:'${TAG}'|' $GITHUB_WORKSPACE/templates/deployment.yml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/todo-app/deployment:'${TAG}'|' $GITHUB_WORKSPACE/templates/deployment.yaml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 todo-production
 
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/templates/deployment.yml
+        run: kubectl apply -f $GITHUB_WORKSPACE/templates/deployment.yaml
 
       - name: Service to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/templates/service.yml
+        run: kubectl apply -f $GITHUB_WORKSPACE/templates/service.yaml
 
       - name: Verify deployment
         run: kubectl rollout status deployment/todo-app
