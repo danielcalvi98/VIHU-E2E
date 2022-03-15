@@ -73,3 +73,36 @@ jobs:
 
       - name: 🖊 Test
         run: npm run test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - cypress-run
+      - react-test
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@main
+
+      - name: Build container image
+        run: docker build -t registry.digitalocean.com/todo-app/deployment:$(echo $GITHUB_SHA | head -c7) .
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push registry.digitalocean.com/todo-app/deployment:$(echo $GITHUB_SHA | head -c7)
+
+      - name: Update deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/todo-app/deployment:'${TAG}'|' $GITHUB_WORKSPACE/templates/deployment.yml
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 todo-production
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/templates/deployment.yml
+
+      - name: Service to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/templates/service.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/todo-app
