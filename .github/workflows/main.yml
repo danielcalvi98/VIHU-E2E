@@ -83,6 +83,11 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@main
 
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
       - name: Build container image
         run: docker build -t registry.digitalocean.com/todo-app/deployment:$(echo $GITHUB_SHA | head -c7) .
 
