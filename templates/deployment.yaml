@@ -8,15 +8,15 @@ spec:
     matchLabels:
       app: todo-app
       version: v1
-    template:
-      metadata:
-        labels:
-          app: todo-app
-          version: v1
-        spec:
-          containers:
-          - image: <IMAGE>
-            imagePullPolicy: Always
-            name: todo-app
-            ports:
-              - containerPort: 3000
+  template:
+    metadata:
+      labels:
+        app: todo-app
+        version: v1
+    spec:
+      containers:
+      - image: <IMAGE>
+        imagePullPolicy: Always
+        name: todo-app
+        ports:
+          - containerPort: 3000
